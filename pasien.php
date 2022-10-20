@@ -1,53 +1,78 @@
 <?php
-include("koneksi.php"); ?>
+include("koneksi.php");
+?>
+<h1>Data Pasien</h1>
+<h4> <a href=index.php>Ke Halaman Utama</a></h4>
+ 
+ <form action="pasien.php" method="get">
+     <label>Cari :</label>
+     <input type="text" name="cari">
+     <input type="submit" value="Cari">
+ </form>
+  
+ <?php 
+ if(isset($_GET['cari'])){
+     $cari = $_GET['cari'];
+     echo "<b>Hasil pencarian : ".$cari."</b>";
+ }
+ ?>
+ <?php
+ include("koneksi.php");?>
 
 <html>
     <head>
 </head>
 <body>
-    <h1> Data Pasien</h1>
-    <h4> <a href=tambah_pasien.php>Ke Halaman Pertama</a></h4>
+    <h1>Data Pasien</h1>
+    <h4> <a href=index.php>Ke Halaman Utama</a></h4>
     <table border="1">
         <tr>
-            <th>id</th>
-            <th>Nama</th>
-            <th>Alamat</th>
-            <th>Jenis Kelamin</th>
-            <th>No telp</th>
-            <th>Agama</th>
-            <th>Tanggal Masuk</th>
-            <th>Gejala</th>
-            <th>Tempat Lahir</th>
-            <th>Tanggal Lahir</th>
-            <th>No Kamar</th>
-        </tr>
+            <th>id pasien</th>
+            <th>nama pasien</th>
+            <th>alamat</th>
+            <th>jenis kelamin</th>
+            <th>no.telp</th>
+            <th>agama</th>
+            <th>tanggal masuk</th>
+            <th>gejala</th>
+            <th>tempat lahir</th>
+            <th>tanggal lahir</th>
+            <th>no kamar</th>
+</tr>
 
 <?php
-  include("koneksi.php");
-  $sql='SELECT * FROM tb_pasien';
-  $query= mysqli_query($koneksi, $sql);
+include("koneksi.php");
+if(isset($_GET['cari'])){
+		$cari = $_GET['cari'];
+		$sql = "SELECT * FROM tb_pasien WHERE nama like '%".$cari."%'";	
+        $query = mysqli_query($koneksi, $sql);			
+	}else{
 
-  while($datapasien=mysqli_fetch_array($query)){
-  
+    $sql='SELECT * FROM tb_pasien';
+    $query = mysqli_query($koneksi, $sql);
+}
+
+
+while($pasien =mysqli_fetch_array($query)){
     echo "<tr>";
-          echo "<td>".$datapasien['id']."</td>";
-          echo "<td>".$datapasien['Nama']."</td>";
-          echo "<td>".$datapasien['Alamat']."</td>";
-          echo "<td>".$datapasien['Jenis_Kelamin']."</td>";
-          echo "<td>".$datapasien['No_telp']."</td>";
-          echo "<td>".$datapasien['Agama']."</td>";
-          echo "<td>".$datapasien['Tanggal_Masuk']."</td>";
-          echo "<td>".$datapasien['Gejala']."</td>";
-          echo "<td>".$datapasien['Tempat_Lahir']."</td>";
-          echo "<td>".$datapasien['Tanggl_Lahir']."</td>";
-          echo "<td>".$datapasien['No_Kamar']."</td>";
-          echo "<td>";
-          echo "<a href='edit-pendataanpasien?id=".$datapasien['id']."'>Edit</a> |";
-          echo "<a href='hapus-pendataanpasien?id=".$datapasien['id']."'>Hapus</a>";
-          echo "</td>";
+    echo "<td>".$pasien['id']."</td>";
+    echo "<td>".$pasien['nama']."</td>";
+    echo "<td>".$pasien['alamat']."</td>";
+    echo "<td>".$pasien['jk']."</td>";
+    echo "<td>".$pasien['no_telp']."</td>";
+    echo "<td>".$pasien['agama']."</td>";
+    echo "<td>".$pasien['tanggal_masuk']."</td>";
+    echo "<td>".$pasien['gejala']."</td>";
+    echo "<td>".$pasien['tempat_lahir']."</td>";
+    echo "<td>".$pasien['tanggal_lahir']."</td>";
+    echo "<td>".$pasien['no_kamar']."</td>";
+    echo "<td>";
+    echo "<a href='edit-data.php?id=".$pasien['id']."'>Edit</a> |";
+    echo "<a href='hapus-data.php?id=".$pasien['id']."'>Hapus</a> |";
+    echo "</td>";
     echo "</tr>";
-  }
-?>
-</table>
+ }
+ ?>
+ </table>
 </body>
 </html>
